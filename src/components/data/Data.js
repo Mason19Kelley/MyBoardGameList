@@ -8,15 +8,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import Search from '../search/Search'
 
 const Data = () => {
   const [games, setGames] = useState([])
   const [error, setError] = useState("")
+  const [searchText, setSearchText] = useState("")
+  
 
   const fetchData = () => {
 
-    fetch("https://api.boardgameatlas.com/api/search?client_id=qF6YN1WEhA&limit=100")
+    fetch(`https://api.boardgameatlas.com/api/search?client_id=qF6YN1WEhA&limit=100&name=${searchText}`)
     .then(response => {
       if (response.ok) {
         return response.json()
@@ -35,13 +37,31 @@ const Data = () => {
       })
   }
 
+  const textChange = (event) =>{    
+    setSearchText(event.target.value);  
+  }
+
+  const textSubmit = (event) => {
+    console.log(searchText)
+    fetchData()
+  }
+  
   useEffect(() => {
     fetchData()
-    
-  }, [])
-
+  }, []);
+  
+  const handleMissingPublisher = (property) => {
+    if(typeof property === "undefined"){
+      return("undefined")
+    } else{
+      return(property.name)
+    }
+  }
   return (
+    <div>
+    <Search setSearchText={textChange} clickButton={textSubmit}/>
     <TableContainer component={Paper}>
+      
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
@@ -67,7 +87,7 @@ const Data = () => {
               <TableCell align="right">{game.name}</TableCell>
               <TableCell align="right">{game.average_user_rating.toFixed(2)}</TableCell>
               <TableCell align="right">{game.players}</TableCell>
-              <TableCell align="right">{game.primary_publisher.name}</TableCell>
+              <TableCell align="right">{handleMissingPublisher(game.primary_publisher)}</TableCell>
               <TableCell align="right">{game.year_published}</TableCell>
               <TableCell align="right">{game.price}</TableCell>
               
@@ -76,6 +96,7 @@ const Data = () => {
         </TableBody>
       </Table>
     </TableContainer>
+    </div>
   );
 }
 

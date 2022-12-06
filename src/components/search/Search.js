@@ -3,7 +3,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-const Search = () => {
+const Search = ({ setSearchText, clickButton }) => {
+  
   return (
     <Box
       component="form"
@@ -16,8 +17,8 @@ const Search = () => {
       justifyContent="flex-end"
       alignItems="flex-end"
     >
-        <TextField id="filled-basic" label="Search Field" type="search" variant="filled" />
-        <Button variant="contained" size="large">Search</Button>
+        <TextField id="filled-basic" label="Search Field" type="search" variant="filled" onChange={setSearchText}/>
+        <Button variant="contained" size="large" sx={{height: 55}} onClick={clickButton}>Search</Button>
     </Box>
   );
 }
