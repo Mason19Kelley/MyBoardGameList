@@ -68,6 +68,7 @@ const Data = () => {
   }
   return (
     <div>
+      <p>hello</p>
     <Search setSearchText={textChange} clickButton={textSubmit}/>
     <TableContainer component={Paper}>
       
